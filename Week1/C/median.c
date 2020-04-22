@@ -16,6 +16,14 @@
 double *read_data(FILE *fp, int *nr_values);
 double median(const double *values, const int nr_values);
 
+/*!
+  \brief Main function being executed.
+
+  Reads a number of values from STDIN, calculates median and print the median.
+  \param argc Number of command line arguments.
+  \param argv Array containing command line arguments.
+  \return 0 on success
+*/
 int main(int argc, char *argv[]) {
     int nr_values = 0;
     double *values = read_data(stdin, &nr_values);
