@@ -1,3 +1,13 @@
+/*!
+  \file
+  \brief Calculating median of values read from STDIN
+
+  \mainpage Median calculator
+
+  This small program reads in input data from STDIN, calculates the median 
+  value of this input and outputs it to STDOUT.
+ */
+
 #include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,6 +24,17 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
+/*!
+  \brief Read in a given number of values from a given file stream.
+
+  Allocates memory and stores a given number of input values in it. Outputs
+  error in case memory cannot be allocated. Function returns if no more values
+  can be read, in case nr_values is higher than actual number of input values.
+  \param fp        Pointer to a file stream where to read input values from.
+  \param nr_values The number of values to read from file stream. Value might
+                   change if less values can be read than anticipated. 
+  \return Returns a pointer to the memory block where input values are stored.
+*/
 double *read_data(FILE *fp, int *nr_values) {
     const int increment = 1000;
     int current_size = increment;
@@ -35,12 +56,28 @@ double *read_data(FILE *fp, int *nr_values) {
     return values;
 }
 
+/*!
+  \brief Prints a number of elements of an array.
+
+  The first n elements of an array of doubles is printed.
+  \param values Pointer to value array that shall be printed.
+  \param n      Number of values to print from array.
+*/
 void print_data(const double *values, const int n) {
     for (int i = 0; i < n; i++)
         printf("%10.2lf", values[i]);
     printf("\n");
 }
 
+/*!
+  \brief Compares to values interpreted as doubles
+
+  Input values are casted to doubles and compared. Returns either -1, 0, or 1.
+  \param v1 First value
+  \param v2 Second value
+  \return Returns -1 if v1 is smaller than v2, 1 if v1 is bigger than v2, and
+                  0 otherwise. 
+*/
 int value_cmp(const void *v1, const void *v2) {
     double *d1 = (double *) v1;
     double *d2 = (double *) v2;
@@ -52,6 +89,17 @@ int value_cmp(const void *v1, const void *v2) {
         return 0;
 }
 
+/*!
+  \brief Calculates median of a given number of elements of an array of values
+
+  Calculats the median value of an array of values considering the first
+  nr_values elements in the array. Uses quicksort on a temporary created array
+  to calculate median.
+  \param values    Array of values to calculate median for.
+  \param nr_values Number of values of the array to consider for calculating
+                   the median.
+  \return Median value
+*/
 double median(const double *values, const int nr_values) {
     double *tmp = (double *) malloc(nr_values*sizeof(double));
     if (tmp == NULL)
